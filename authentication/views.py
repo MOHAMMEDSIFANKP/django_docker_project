@@ -63,6 +63,7 @@ class qrcode_generator(LoginRequiredMixin,View):
         user_token = str(request.user.id)
         signer = Signer()
         signed_user_token = signer.sign(user_token)
+        print(signed_user_token)
         request.session['user_token'] = user_token
         base_url = config('base_url')
         redirect_url = f'{base_url}MobileAuthenticationView/{signed_user_token}/'
@@ -89,6 +90,7 @@ class MobileAuthenticationView(View):
     def get(self, request, user_identifier):
         signer = Signer()
         user_id = signer.unsign(user_identifier)
+        print(user_id)
         try:
             user = User.objects.get(id=user_id)
         except User.DoesNotExist:
@@ -96,7 +98,7 @@ class MobileAuthenticationView(View):
 
         if user is not None:
             # User is authenticated, log them in.
-            login(request, user)
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return redirect('Profile') 
 
         return HttpResponse('Authentication failed. Please try again.')
