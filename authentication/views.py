@@ -69,7 +69,6 @@ class qrcode_generator(LoginRequiredMixin,View):
         user_token = str(request.user.id)
         signer = Signer()
         signed_user_token = signer.sign(user_token)
-        print(signed_user_token)
         request.session['user_token'] = user_token
         base_url = config('base_url')
         redirect_url = f'{base_url}MobileAuthenticationView/{signed_user_token}/'
