@@ -103,6 +103,6 @@ class MobileAuthenticationView(View):
         if user is not None:
             # User is authenticated, log them in.
             login(request, user)
-            return render(Profile)
+            return redirect(Profile)
 
         return HttpResponse('Authentication failed. Please try again.')
