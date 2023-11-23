@@ -19,8 +19,8 @@
                 class="rounded-circle img-fluid" style="width: 100px;" />
               <h4 class="mb-2">{{request.user.first_name}} {{request.user.last_name}}</h4>
             </div>
-            <div>
-              <img src="{%url 'qrcode_generator'%}" alt="QR Code">
+            <div class="w-100 d-flex justify-content-center align-items-center">
+              <img src="{%url 'qrcode_generator'%}"  style="width: 10rem; height: 10rem;" alt="QR Code">
 
             </div>
           </div>
