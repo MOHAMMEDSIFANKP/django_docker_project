@@ -6,6 +6,7 @@ from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from django.http import HttpResponse
+from django.core.signing import BadSignature, Signer
 import qrcode
 from io import BytesIO
 from decouple import config
@@ -66,9 +67,11 @@ class Profile(LoginRequiredMixin, TemplateView):
 class qrcode_generator(LoginRequiredMixin,View):
     def get(self, request):
         user_token = str(request.user.id)
+        signer = Signer()
+        signed_user_token = signer.sign(user_token)
         request.session['user_token'] = user_token
         base_url = config('base_url')
-        redirect_url = f'{base_url}MobileAuthenticationView/{user_token}/'
+        redirect_url = f'{base_url}MobileAuthenticationView/{signed_user_token}/'
 
         qr = qrcode.QRCode(
             version=1,
@@ -90,8 +93,10 @@ class qrcode_generator(LoginRequiredMixin,View):
 
 class MobileAuthenticationView(View):
     def get(self, request, user_identifier):
+        signer = Signer()
+        user_id = signer.unsign(user_identifier)
         try:
-            user = User.objects.get(id=user_identifier)
+            user = User.objects.get(id=user_id)
         except User.DoesNotExist:
             user = None
 
