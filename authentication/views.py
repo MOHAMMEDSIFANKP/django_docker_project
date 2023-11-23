@@ -4,9 +4,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.forms import AuthenticationForm
-from django.core.files import File
+from django.contrib.auth.models import User
 import qrcode
 from io import BytesIO
+from decouple import config
 from .forms import *
 # Create your views here.
 
@@ -63,13 +64,12 @@ class Profile(LoginRequiredMixin, TemplateView):
     login_url = 'signin/'
     template_name = 'profile.html'
 
-
-
 class qrcode_generator(LoginRequiredMixin,View):
     def get(self, request):
         user_token = str(request.user.id)
         request.session['user_token'] = user_token
-        redirect_url = f'http://172.17.0.1:8000/MobileAuthenticationView/{user_token}/'
+        base_url = config('base_url')
+        redirect_url = f'{base_url}MobileAuthenticationView/{user_token}/'
 
         qr = qrcode.QRCode(
             version=1,
@@ -89,7 +89,6 @@ class qrcode_generator(LoginRequiredMixin,View):
         return response
     
 
-from django.contrib.auth.models import User
 class MobileAuthenticationView(View):
     def get(self, request, user_identifier):
         try:
