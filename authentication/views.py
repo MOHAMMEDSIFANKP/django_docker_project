@@ -54,12 +54,6 @@ class Signin(FormView):
             
         return response
 
-class Signout(LoginRequiredMixin,View):
-    login_url = 'signin/'
-    def get(self,request):
-        logout(request)
-        return redirect('Signin')
-
 class Profile(LoginRequiredMixin, TemplateView):
     login_url = 'signin/'
     template_name = 'profile.html'

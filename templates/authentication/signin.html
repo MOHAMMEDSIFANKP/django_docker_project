@@ -11,6 +11,10 @@
                 <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
   
                   <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Sign in</p>
+                  <div class="col-md-12">
+                    <a class="btn btn-lg btn-google btn-block text-uppercase btn-outline" href="{%url 'social:begin' 'google-oauth2' %}"><img src="https://img.icons8.com/color/16/000000/google-logo.png"> Signup Using Google</a>
+
+                  </div>
                   <p class="text-center">{{form.non_field_errors }}</p>
                   <p class="text-center">{{form.field_error }}</p>
                   <form class="mx-1 mx-md-4" action="{%url 'Signin'%}" method="post">
