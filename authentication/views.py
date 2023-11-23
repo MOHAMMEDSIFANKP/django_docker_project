@@ -5,6 +5,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
+from django.http import HttpResponse
 import qrcode
 from io import BytesIO
 from decouple import config
@@ -57,8 +58,6 @@ class Signout(LoginRequiredMixin,View):
     def get(self,request):
         logout(request)
         return redirect('Signin')
-from django.http import HttpResponse
-
 
 class Profile(LoginRequiredMixin, TemplateView):
     login_url = 'signin/'
@@ -99,6 +98,6 @@ class MobileAuthenticationView(View):
         if user is not None:
             # User is authenticated, log them in.
             login(request, user)
-            return HttpResponse('Authentication successful. You can close this page and return to the app.')
+            return render(Profile)
 
         return HttpResponse('Authentication failed. Please try again.')
