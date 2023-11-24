@@ -97,7 +97,6 @@ class QrProfileView(View):
         except Exception as e:
             print(f"An error occurred: {str(e)}")
             return HttpResponse("An error occurred")
-       
-    
-class not_fount(TemplateView):
-    template_name = '404_page/404_page.html'
+        
+def error_404_view(request,exception):
+    return render(request,'404_page/404_page.html')

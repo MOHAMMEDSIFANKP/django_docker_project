@@ -9,6 +9,4 @@ urlpatterns = [
     path('', Home.as_view(), name='Home'),
     path('profile/', UserProfileView.as_view(), name='UserProfiles'),    
     path('QrProfileView/<str:token>/<str:user_id>/', QrProfileView.as_view(), name='QrProfileView'),
-    path('not_fount/', not_fount.as_view(), name='not_fount'),
-
 ]
