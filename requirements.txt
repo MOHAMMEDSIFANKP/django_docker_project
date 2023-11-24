@@ -8,3 +8,4 @@ social-auth-app-django
 social-auth-core
 qrcode
 gunicorn
+pandas
