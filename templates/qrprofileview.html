@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title%}Home page{% endblock %}
+{% block body%}
+{% include "user/navbar.html" %}
+<div class="container py-5">
+  <div class="card flex-md-row">
+    <div class="col-12 col-md-4 col-xl-4">
+      <div class="image-container d-flex justify-content-center align-items-center my-3">
+        {% if user_profile.profile_image %}
+        <img src="{{user_profile.profile_image.url}}" width="150" alt="">
+        {% else %}
+        <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" width='150' class="rounded-circle img-fluid"
+          alt="User Image">
+        {% endif %}
+      </div>
+    </div>
+    <div class="col-12 col-md-4 col-xl-4 my-3 d-flex justify-content-center align-items-center">
+      <div class="user-details-container">
+        <p style="font-weight: bold;">
+          <span style="font-size: small; font-weight: lighter;">Name : </span>
+          {% if user_profile.user.first_name %}
+          {{user_profile.user.first_name }}
+          {% endif %}
+
+          {% if user_profile.user.last_name %}
+          {{user_profile.user.last_name }}
+          {% endif %}
+
+        </p>
+        <p style="font-size: small;">Username : <span style="font-size: medium; font-weight: bold;">{{request.user.username}}</span></p>
+      </div>
+    </div>
+    <div class="col-12 col-md-4 col-xl-4 my-3 d-flex justify-content-center align-items-center">
+      <!-- Column 3: QR Code -->
+      <div class="qr-code-container">
+        {% if user_profile.qrcode %}
+        <img src="{{user_profile.qrcode.url}}" alt="QR Code" width='150'>
+        
+        {% else %}
+        <img src="your_qr_code_url" width='150'>
+        <i style="font-size: small;">Something wrong</i>
+        {% endif %}
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card container">
+  {% if user_profile.bio %}
+  <i style="font-size: small;">bio :</i>
+  <p >{{user_profile.bio}}</p>
+  {{ user_profile.bio}}
+  {% else %}
+  <i style="font-size: small;">Add bio</i>
+  {% endif %}
+</p> 
+</div>
+{% endblock %}

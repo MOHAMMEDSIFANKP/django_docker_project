@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'authentication',
+    'dashboard',
     'social_django',
 ]
 

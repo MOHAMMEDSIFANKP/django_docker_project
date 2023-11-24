@@ -10,13 +10,18 @@
               <div class="row justify-content-center">
                 <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
   
-                  <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 ">Sign in</p>
-                  <div class="col-md-12">
-                    <a class="btn btn-lg btn-google btn-block text-uppercase btn-outline" href="{%url 'social:begin' 'google-oauth2' %}"><img src="https://img.icons8.com/color/16/000000/google-logo.png">Login With Google</a>
+                  <p class="text-center h1 fw-bold mb-4 mx-1 mx-md-4 ">Sign in</p>
+                  <div class="col-md-12 ">
+                    <a class="btn btn-lg d-flex justify-content-center align-items-center btn-google btn-block text-uppercase btn-outline mb-4" style="border-radius: 10px; font-weight: bolder;" href="{%url 'social:begin' 'google-oauth2' %}"><img src="https://img.icons8.com/color/16/000000/google-logo.png" class="mx-2">Login With Google</a>
 
                   </div>
-                  <p class="text-center">{{form.non_field_errors }}</p>
-                  <p class="text-center">{{form.field_error }}</p>
+                  <div class="row d-flex justify-content-center align-items-center">
+                    <hr class="col-5">
+                    <p class="col-2 text-center">or</p>
+                    <hr class="col-5">
+                  </div>
+                  <p class="text-center">{{ form.non_field_errors }}</p>
+                  <p class="text-center ">{{form.field_error }}</p>
                   <form class="mx-1 mx-md-4" action="{%url 'Signin'%}" method="post">
                     {% csrf_token %}
                     
@@ -26,20 +31,20 @@
                       <div class="form-outline flex-fill mb-0">
                         <input type="text" id="form3Example3c" class="form-control" name="username" />
                         <label class="form-label" for="form3Example3c">Username</label>
-                        {{ form.username.errors }}
+                       
                       </div>
                     </div>
-  
+                    {{ form.username.errors }}
                     <div class="d-flex flex-row align-items-center mb-4">
                       <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
                       <div class="form-outline flex-fill mb-0">
                         <input type="password" id="form3Example4c" class="form-control" name="password" />
                         <label class="form-label" for="form3Example4c">Password</label>
-                        {{ form.password.errors }}
                       </div>
                     </div>
   
-  
+                    {{ form.password.errors }}
+
                     <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                       <button type="submit" class="btn btn-primary btn-lg">submit</button>
                     </div>

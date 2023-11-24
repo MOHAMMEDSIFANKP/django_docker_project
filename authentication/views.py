@@ -1,26 +1,27 @@
 from django.shortcuts import render,redirect
 from django.views.generic import *
+from django.contrib.auth.views import LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.contrib.auth import login,logout,authenticate
+from django.contrib.auth import login,authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from django.http import HttpResponse
-from django.core.signing import BadSignature, Signer
-import qrcode
-from io import BytesIO
-from decouple import config
+from django.shortcuts import get_object_or_404
+import hashlib
+from django.conf import settings
 from .forms import *
+from .models import UserProfile
 # Create your views here.
 
 class Signup(CreateView):
     form_class = CustomUserCreationForm
     template_name = 'authentication/signup.html'
-    success_url = reverse_lazy('Profile')
+    success_url = reverse_lazy('Home')
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:            
-            return redirect('Profile')
+            return redirect('Home')
         return super().get(request, *args, **kwargs)
 
     def form_valid(self, form):
@@ -37,11 +38,11 @@ class Signup(CreateView):
 class Signin(FormView):
     form_class = AuthenticationForm
     template_name = 'authentication/signin.html'
-    success_url = reverse_lazy('Profile')
+    success_url = reverse_lazy('Home')
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:            
-            return redirect('Profile')
+            return redirect('Home')
         return super().get(request, *args, **kwargs)
     def form_valid(self, form):
         response = super().form_valid(form)
@@ -54,51 +55,49 @@ class Signin(FormView):
             
         return response
 
-class Profile(LoginRequiredMixin, TemplateView):
+class CustomLogoutView(LogoutView):
+    def get_next_page(self):
+        return reverse_lazy('Signin')
+
+class Home(LoginRequiredMixin, TemplateView):
     login_url = 'signin/'
-    template_name = 'profile.html'
+    template_name = 'user/Home.html'
 
-class qrcode_generator(LoginRequiredMixin,View):
-    def get(self, request):
-        user_token = str(request.user.id)
-        signer = Signer()
-        signed_user_token = signer.sign(user_token)
-        print(signed_user_token)
-        request.session['user_token'] = user_token
-        base_url = config('base_url')
-        redirect_url = f'{base_url}MobileAuthenticationView/{signed_user_token}/'
+class UserProfileView(LoginRequiredMixin, TemplateView):
+    template_name = 'user/profile.html'
 
-        qr = qrcode.QRCode(
-            version=1,
-            error_correction=qrcode.constants.ERROR_CORRECT_L,
-            box_size=10,
-            border=4,
-        )
-        qr.add_data(redirect_url)
-        qr.make(fit=True)
-
-        img = qr.make_image(fill_color="black", back_color="white")
-        img_buffer = BytesIO()
-        img.save(img_buffer)
-        img_buffer.seek(0)
-
-        response = HttpResponse(img_buffer, content_type='image/png')
-        return response
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user_profile = UserProfile.objects.filter(user_id=self.request.user.id).first()
+        context["user_profile"] = user_profile
+        return context
     
+# /////////////////////////////////////////
 
-class MobileAuthenticationView(View):
-    def get(self, request, user_identifier):
-        signer = Signer()
-        user_id = signer.unsign(user_identifier)
-        print(user_id)
+
+
+
+    
+from .models import *
+class QrProfileView(View):
+    template_name = 'qrprofileview.html'
+    def get(self, request, token, user_id):
         try:
             user = User.objects.get(id=user_id)
+            expected_hash = hashlib.sha256(f"{user.id}:{user.date_joined.timestamp()}:{settings.SECRET_KEY}".encode()).hexdigest()
+            user_profile = get_object_or_404(UserProfile, user = user)
+            if token == expected_hash:
+                return render(request,self.template_name,{'user_profile' : user_profile})
+            else:
+                return HttpResponse("Invalid token")
         except User.DoesNotExist:
-            user = None
-
-        if user is not None:
-            # User is authenticated, log them in.
-            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            return redirect('Profile') 
-
-        return HttpResponse('Authentication failed. Please try again.')
+            return HttpResponse("User not found")
+        except ValueError:
+            return HttpResponse("Invalid token format")
+        except Exception as e:
+            print(f"An error occurred: {str(e)}")
+            return HttpResponse("An error occurred")
+       
+    
+class not_fount(TemplateView):
+    template_name = '404_page/404_page.html'

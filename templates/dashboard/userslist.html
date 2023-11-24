@@ -1,0 +1,48 @@
+{% extends "dashboard/dashboardbase.html" %}
+{% block title %}User List | Dashboard{% endblock %}
+{% block body %}
+<div class="row">
+    <div class="d-flex justify-content-between">
+        <div>
+            <button class="btn btn-primary">import</button>
+            <button class="btn btn-secondary">export</button>
+        </div>
+        <div>
+            <input type="text" class="search-focus ps-2 py-1 shadow p-3 mb-5 bg-white" placeholder="Search"
+                style="border-radius: 20px; border-color: #b9b9b9;">
+        </div>
+    </div>
+    <div class="row">
+        {% for user in object_list %}
+        <div class="card flex-md-row col-xl-4 col-md-6 col-12">
+            <div class="col-12 col-md-6 col-xl-6">
+                <div class="image-container d-flex justify-content-center align-items-center my-3">
+                    {% if user.profile_image %}
+                    <img src="{{user.profile_image}}" width='150' class="rounded-circle img-fluid"
+                        alt="User Image">
+                    {% else %}
+                    <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" width='150'
+                        class="rounded-circle img-fluid" alt="User Image">
+                    {% endif %}
+
+                </div>
+                <p class="text-center text-uppercase">{{user.user.first_name}} {{user.user.last_name}}</p>
+            </div>
+            <div class="col-12 col-md-6 col-xl-6 my-3 d-flex justify-content-center align-items-center">
+                <!-- Column 3: QR Code -->
+                <div class="qr-code-container">
+                    {% if user.qrcode %}
+                    <img src="{{user.qrcode.url}}" width="150" alt="QR Code">
+                    {% else %}
+                    <img src="your_qr_code_url">
+                    <i style="font-size: small;">Something wrong</i>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+      
+    </div>
+</div>
+{% endblock %}
