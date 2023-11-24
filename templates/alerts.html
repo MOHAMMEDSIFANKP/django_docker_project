@@ -1,0 +1,17 @@
+{% if messages %}
+
+{% for message in messages %}
+<div id="message" class="container text-center m-1">
+    <div {% if message.tags %} class="alert-{{ message.tags }} p-2 w-100" {% endif %} role="alert">
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}<i class="fa-solid fa-ban text-danger"></i> {{message}}{% endif %}
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %} <i class="fa-solid fa-triangle-exclamation text-warning"></i> {{ message }} {% endif %}
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %} <i class="fa-solid fa-circle-check text-secondary"></i> {{ message }} {% endif %} 
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %} <i class="fa-solid "></i> {{ message }} {% endif %}
+        
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"><span aria-hidden="true">&times;</span></button>
+     </div>
+</div>
+{% endfor %}
+<script src="https://kit.fontawesome.com/ca6b256fcb.js" crossorigin="anonymous"></script>
+
+{% endif %}

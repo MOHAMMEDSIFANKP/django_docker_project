@@ -1,31 +1,64 @@
 {% extends "dashboard/dashboardbase.html" %}
 {% block title %}User List | Dashboard{% endblock %}
 {% block body %}
+
 <div class="container-fluid">
     <div class="row">
         <div class="d-flex justify-content-between">
             <div>
-                <button class="btn btn-primary">import</button>
-                <button class="btn btn-secondary">export</button>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalLong">
+                    import
+                </button>
+
+               {% include "alerts.html" %}              
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">File Uploading</h5>
+                            </div>
+                            <form action="{%url 'DashboardHome'%}" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="modal-body">
+
+                                    <div class="mb-3">
+                                        <label for="fileInput" class="form-label">Choose a file</label>
+                                        <input name="file" type="file" class="form-control" id="fileInput" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+                                    </div>
+
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
             </div>
             <div>
-                <input type="text" class="search-focus ps-2 py-1 shadow p-3 mb-5 bg-white" placeholder="Search"
+                <input type="search" id="search-input" class="search-focus ps-2 py-1 shadow p-3 mb-5 bg-white" placeholder="Search"
                     style="border-radius: 20px; border-color: #b9b9b9;">
             </div>
         </div>
-        <div class="row">
+        <div class="row" id='search-results'>
             {% for user in object_list %}
             <div class="card flex-md-row col-xl-4 col-md-6 col-12">
                 <div class="col-12 col-md-6 col-xl-6">
                     <div class="image-container d-flex justify-content-center align-items-center my-3">
                         {% if user.profile_image %}
-                        <img src="{{user.profile_image}}" width='150' class="rounded-circle img-fluid"
-                            alt="User Image">
+                        <img src="{{user.profile_image}}" width='150' class="rounded-circle img-fluid" alt="User Image">
                         {% else %}
                         <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" width='150'
                             class="rounded-circle img-fluid" alt="User Image">
                         {% endif %}
-    
+
                     </div>
                     <p class="text-center text-uppercase">{{user.user.first_name}} {{user.user.last_name}}</p>
                 </div>
@@ -38,13 +71,60 @@
                         <img src="your_qr_code_url">
                         <i style="font-size: small;">Something wrong</i>
                         {% endif %}
-    
+
                     </div>
                 </div>
             </div>
             {% endfor %}
-          
+
         </div>
     </div>
 </div>
+<div class="d-flex justify-content-center align-content-center w-100 ">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            {% if object_list.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page={{ object_list.previous_page_number }}">Previous</a></li>
+            {% endif %}
+            {% for page_num in object_list.paginator.page_range %}
+                <li class="page-item {% if page_num == object_list.number %}active{% endif %}">
+                    <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                </li>
+            {% endfor %}
+            {% if object_list.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ object_list.next_page_number }}">Next</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#search-input").on("keyup", function (e) {
+            if (e.keyCode === 13) {
+                searchEmails();
+            } else {
+                clearTimeout($(this).data("timeout"));
+                $(this).data("timeout", setTimeout(searchEmails, 500)); 
+            }
+        });
+
+        function searchEmails() {
+            var query = $("#search-input").val();
+            console.log(query);
+            $.ajax({
+                type: "GET",
+                url: "{% url 'Search' %}",
+                data: { "query": query },
+                success: function (data) {
+                    $("#search-results").html(data);
+                }
+            });
+        }
+        
+    });
+</script>
 {% endblock %}

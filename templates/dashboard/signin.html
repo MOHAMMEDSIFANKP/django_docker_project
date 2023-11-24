@@ -24,7 +24,7 @@ data-sidebar-position="fixed" data-header-position="fixed">
             <p class="text-center">Your Social Campaigns</p>
             <p class="text-center">{{ form.non_field_errors }}</p>
               <p class="text-center ">{{form.field_error }}</p>
-            <form action="{%url 'DashbardLogin'%}" method="post">
+            <form action="{%url 'DashboardLogin'%}" method="post">
               {% csrf_token %}
               <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Username</label>
