@@ -28,7 +28,7 @@
           {% endif %}
 
         </p>
-        <p style="font-size: small;">Username : <span style="font-size: medium; font-weight: bold;">{{request.user.username}}</span></p>
+        <p style="font-size: small;">Username : <span style="font-size: medium; font-weight: bold;">{{user_profile.user.username}}</span></p>
       </div>
     </div>
     <div class="col-12 col-md-4 col-xl-4 my-3 d-flex justify-content-center align-items-center">
@@ -46,14 +46,16 @@
     </div>
   </div>
 </div>
-<div class="card container">
-  {% if user_profile.bio %}
-  <i style="font-size: small;">bio :</i>
-  <p >{{user_profile.bio}}</p>
-  {{ user_profile.bio}}
-  {% else %}
-  <i style="font-size: small;">Add bio</i>
-  {% endif %}
-</p> 
-</div>
+<div class="container">
+    <div class="card mx-1 p-1">
+      {% if user_profile.bio %}
+      <i style="font-size: small;">bio :</i>
+      <p >{{user_profile.bio}}</p>
+      {{ user_profile.bio}}
+      {% else %}
+      <i style="font-size: small;">Add bio</i>
+      {% endif %}
+    </p> 
+    </div>
+    </div>
 {% endblock %}
