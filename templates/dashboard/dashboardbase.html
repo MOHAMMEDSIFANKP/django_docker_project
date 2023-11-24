@@ -18,8 +18,8 @@
             <!-- Sidebar scroll-->
             <div>
                 <div class="brand-logo d-flex align-items-center justify-content-between">
-                    <a href="./index.html" class="text-nowrap logo-img">
-                        <img src="{% static "images/logos/dark-logo.svg" %}" width="180" alt="" />
+                    <a href="{%url 'DashbaordHome'%}" class="text-nowrap logo-img">
+                        <img src="{% static " images/logos/dark-logo.svg" %}" width="180" alt="" />
                     </a>
                     <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
                         <i class="ti ti-x fs-8"></i>
@@ -33,7 +33,7 @@
                             <span class="hide-menu">Home</span>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" href="./index.html" aria-expanded="false">
+                            <a class="sidebar-link" href="{%url 'DashbaordHome'%}" aria-expanded="false">
                                 <span>
                                     <i class="ti ti-layout-dashboard"></i>
                                 </span>
@@ -41,14 +41,7 @@
                             </a>
                         </li>
 
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="{%url 'UsersList'%}" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-user-plus"></i>
-                                </span>
-                                <span class="hide-menu">Users List</span>
-                            </a>
-                        </li>
+
 
                     </ul>
 
@@ -103,7 +96,7 @@
                     </div>
                 </nav>
             </header>
-                {% block body %}{% endblock %}
+            {% block body %}{% endblock %}
         </div>
     </div>
     </div>

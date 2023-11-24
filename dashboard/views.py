@@ -44,9 +44,6 @@ class CustomLogoutView(CustomLoginRequiredAdmin,LogoutView):
     def get_next_page(self):
         return reverse_lazy('DashbardLogin')
     
-class DashbaordHome(CustomLoginRequiredAdmin,TemplateView):
-    template_name = 'dashboard/index.html'
-
-class UsersList(CustomLoginRequiredAdmin, ListView):
+class DashbaordHome(CustomLoginRequiredAdmin,ListView):
     template_name = 'dashboard/userslist.html'
     queryset = UserProfile.objects.all().exclude(user__is_superuser=True)
