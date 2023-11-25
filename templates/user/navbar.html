@@ -12,40 +12,44 @@
           <div class="d-flex align-items-center">
     
             <!-- Avatar -->
+            {% if request.user.is_authenticated %}
             <div class="dropdown">
-              <a
-                data-mdb-dropdown-init
-                class="dropdown-toggle d-flex align-items-center hidden-arrow"
-                href="#"
-                id="navbarDropdownMenuAvatar"
-                role="button"
-                aria-expanded="false"
-              >
-                <img
-                  src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
-                  class="rounded-circle"
-                  height="35"
-                  alt="Black and White Portrait of a Man"
-                  loading="lazy"
-                />
-              </a>
-              <ul
-                class="dropdown-menu dropdown-menu-end"
-                aria-labelledby="navbarDropdownMenuAvatar"
-              >
-                <li>
-                  <a class="dropdown-item" href="{%url 'UserProfiles'%}">My profile</a>
-                </li>
-               {% if request.user.is_superuser %}
-               <li>
-                <a class="dropdown-item" href="{%url 'DashboardHome'%}">Dashboard</a>
+            <a
+              data-mdb-dropdown-init
+              class="dropdown-toggle d-flex align-items-center hidden-arrow"
+              href="#"
+              id="navbarDropdownMenuAvatar"
+              role="button"
+              aria-expanded="false"
+            >
+              <img
+                src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
+                class="rounded-circle"
+                height="35"
+                alt="Black and White Portrait of a Man"
+                loading="lazy"
+              />
+            </a>
+            <ul
+              class="dropdown-menu dropdown-menu-end"
+              aria-labelledby="navbarDropdownMenuAvatar"
+            >
+              <li>
+                <a class="dropdown-item" href="{%url 'UserProfiles'%}">My profile</a>
               </li>
-               {% endif %}
-                <li>
-                  <a class="dropdown-item" href="{%url 'Signout'%}">Logout</a>
-                </li>
-              </ul>
-            </div>
+             {% if request.user.is_superuser %}
+             <li>
+              <a class="dropdown-item" href="{%url 'DashboardHome'%}">Dashboard</a>
+            </li>
+             {% endif %}
+              <li>
+                <a class="dropdown-item" href="{%url 'Signout'%}">Logout</a>
+              </li>
+            </ul>
+          </div>
+          {% else %}
+          <a href="{%url 'Signin'%}" class="btn">Login</a>
+           {% endif %}
           </div>
           <!-- Right elements -->
         </div>

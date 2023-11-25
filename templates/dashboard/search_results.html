@@ -30,6 +30,6 @@
 {% else %}
 <p class="text-center">Result not found</p>
 <div class="d-flex justify-content-center align-items-center">
-    <a href="{%url 'DashboardHome'%}" class="btn btn-primary">Show all list</a href="">
+    <a href="{% url 'DashboardHome' %}" class="btn btn-outline-primary">Show all list</a>
 </div>
 {% endif %}
