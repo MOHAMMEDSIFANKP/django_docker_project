@@ -1,7 +1,25 @@
 {% extends "base.html" %}
 {% block title %}Home page{% endblock  %}
 {% block  body%}
-<div>
 {% include "user/navbar.html" %}
+<div class="container" style="z-index: 1;">
+    <div class="row mt-5">
+        {% if news_data %}
+            {% for article in news_data %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="{{ article.urlToImage }}" class="card-img-top" alt="{{ article.title }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ article.title }}</h5>
+                            <p class="card-text">{{ article.description }}</p>
+                            <a href="{{ article.url }}" class="btn btn-primary" target="_blank">Read more</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-danger">Failed to fetch news data.</p>
+        {% endif %}
+    </div>
 </div>
 {% endblock  %}

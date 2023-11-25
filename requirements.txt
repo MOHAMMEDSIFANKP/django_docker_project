@@ -9,3 +9,4 @@ social-auth-core
 qrcode
 gunicorn
 pandas
+requests

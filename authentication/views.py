@@ -12,6 +12,8 @@ import hashlib
 from django.conf import settings
 from .forms import *
 from .models import UserProfile
+import requests
+from decouple import config
 # Create your views here.
 
 class Signup(CreateView):
@@ -60,9 +62,13 @@ class CustomLogoutView(LoginRequiredMixin,LogoutView):
     def get_next_page(self):
         return render(self.request,self.template_name)
 
-class Home(LoginRequiredMixin, TemplateView):
+class Home(LoginRequiredMixin, View):
     login_url = 'signin/'
     template_name = 'user/Home.html'
+
+    def get(self,request):
+        news_data = fetch_news()
+        return render(request,self.template_name, {'news_data': news_data})
 
 class UserProfileView(LoginRequiredMixin, TemplateView):
     template_name = 'user/profile.html'
@@ -92,6 +98,22 @@ class QrProfileView(View):
         except Exception as e:
             print(f"An error occurred: {str(e)}")
             return HttpResponse("An error occurred")
-        
+
+def fetch_news():
+    url = 'https://newsapi.org/v2/everything'
+    params = {
+        'q': 'student',
+        'from': '2023-10-25',
+        'sortBy': 'publishedAt',
+        'apiKey': config('NEWS_API_KEY'),
+    }
+
+    response = requests.get(url, params=params)
+
+    if response.status_code == 200:
+        return response.json()['articles']
+    else:
+        return None
+
 def error_404_view(request,exception):
     return render(request,'404_page/404_page.html')
