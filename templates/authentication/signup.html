@@ -1,6 +1,9 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}Sign Up{% endblock  %}
 {% block body %}
+<link rel="stylesheet" href="{% static "css/styles.min.css" %}" />
+
 <section class="vh-100" style="background-color: #eee;">
     <div class="container h-100">
       <div class="row d-flex justify-content-center align-items-center h-100">
@@ -57,7 +60,7 @@
                     {{ form.password2.errors }}
 
                     <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                      <button type="submit" class="btn btn-primary btn-lg">Register</button>
+                      <button type="submit" class="btn btn-primary">Register</button>
                     </div>
                     <div class="text-center">
                       <p>already you have an account? <a href="{%url 'Signin'%}">sign in </a></p>
@@ -79,4 +82,6 @@
       </div>
     </div>
   </section>
+  <script src="{% static "libs/jquery/dist/jquery.min.js" %}"></script>
+  <script src="{% static "libs/bootstrap/dist/js/bootstrap.bundle.min.js" %}"></script>
 {% endblock %}

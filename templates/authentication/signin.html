@@ -1,6 +1,9 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}Sign In{% endblock  %}
 {% block body %}
+<link rel="stylesheet" href="{% static "css/styles.min.css" %}" />
+
 <section class="vh-100" style="background-color: #eee;">
     <div class="container h-100">
       <div class="row d-flex justify-content-center align-items-center h-100">
@@ -12,7 +15,7 @@
   
                   <p class="text-center h1 fw-bold mb-4 mx-1 mx-md-4 ">Sign in</p>
                   <div class="col-md-12 ">
-                    <a class="btn btn-lg d-flex justify-content-center align-items-center btn-google btn-block text-uppercase btn-outline mb-4" style="border-radius: 10px; font-weight: bolder;" href="{%url 'social:begin' 'google-oauth2' %}"><img src="https://img.icons8.com/color/16/000000/google-logo.png" class="mx-2">Login With Google</a>
+                    <a class="btn btn-lg d-flex justify-content-center align-items-center btn-google btn-block text-uppercase btn-outline mb-4 shadow-lg" style="border-radius: 10px; font-weight: bolder;" href="{%url 'social:begin' 'google-oauth2' %}"><img src="https://img.icons8.com/color/16/000000/google-logo.png" class="mx-2">Login With Google</a>
 
                   </div>
                   <div class="row d-flex justify-content-center align-items-center">
@@ -46,7 +49,7 @@
                     {{ form.password.errors }}
 
                     <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                      <button type="submit" class="btn btn-primary btn-lg">submit</button>
+                      <button type="submit" class="btn btn-primary ">submit</button>
                     </div>
                     <div class="text-center">
                     <p>don't have an account? <a href="{%url 'Signup'%}">sign up </a></p>
@@ -68,4 +71,6 @@
       </div>
     </div>
   </section>
+  <script src="{% static "libs/jquery/dist/jquery.min.js" %}"></script>
+  <script src="{% static "libs/bootstrap/dist/js/bootstrap.bundle.min.js" %}"></script>
 {% endblock %}
