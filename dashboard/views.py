@@ -18,7 +18,7 @@ class CustomLoginRequiredAdmin(LoginRequiredMixin):
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             if not request.user.is_superuser:
-                return redirect('Home')
+                return redirect('DashboardLogin')
         else:
             return redirect('DashboardLogin')
         return super().dispatch(request, *args, **kwargs)
