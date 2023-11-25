@@ -50,7 +50,7 @@ class CustomLogoutView(CustomLoginRequiredAdmin,LogoutView):
     
 class DashboardHome(CustomLoginRequiredAdmin,ListView):
     template_name = 'dashboard/userslist.html'
-    paginate_by = 5
+    paginate_by = 6
     queryset = UserProfile.objects.all().exclude(user__is_superuser=True).order_by('-id')
 
     def get_context_data(self, **kwargs):
