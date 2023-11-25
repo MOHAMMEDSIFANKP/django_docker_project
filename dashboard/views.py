@@ -44,9 +44,9 @@ class DashboardLogin(FormView):
         return super().get(request, *args, **kwargs)
 
 class CustomLogoutView(CustomLoginRequiredAdmin,LogoutView):
-    login_url = 'dashboard/signin/'
+    template_name = 'dashboard/signin.html'
     def get_next_page(self):
-        return reverse_lazy('DashboardLogin')
+        return render(self.request,self.template_name)
     
 class DashboardHome(CustomLoginRequiredAdmin,ListView):
     template_name = 'dashboard/userslist.html'

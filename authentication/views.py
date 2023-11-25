@@ -55,9 +55,10 @@ class Signin(FormView):
             
         return response
 
-class CustomLogoutView(LogoutView):
+class CustomLogoutView(LoginRequiredMixin,LogoutView):
+    template_name = 'authentication/signin.html'
     def get_next_page(self):
-        return reverse_lazy('Signin')
+        return render(self.request,self.template_name)
 
 class Home(LoginRequiredMixin, TemplateView):
     login_url = 'signin/'
@@ -72,13 +73,7 @@ class UserProfileView(LoginRequiredMixin, TemplateView):
         context["user_profile"] = user_profile
         return context
     
-# /////////////////////////////////////////
 
-
-
-
-    
-from .models import *
 class QrProfileView(View):
     template_name = 'qrprofileview.html'
     def get(self, request, token, user_id):
