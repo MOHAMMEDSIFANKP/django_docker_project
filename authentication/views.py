@@ -103,13 +103,12 @@ def fetch_news():
     url = 'https://newsapi.org/v2/everything'
     params = {
         'q': 'student',
-        'from': '2023-10-25',
         'sortBy': 'publishedAt',
         'apiKey': config('NEWS_API_KEY'),
     }
 
     response = requests.get(url, params=params)
-
+    print(response.status_code,'daxpppp')
     if response.status_code == 200:
         return response.json()['articles']
     else:
