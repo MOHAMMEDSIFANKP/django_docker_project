@@ -3,7 +3,7 @@ from django.views.generic import *
 from django.contrib.auth.views import LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.contrib.auth import login,authenticate
+from django.contrib.auth import login,authenticate,logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from django.http import HttpResponse
@@ -57,10 +57,12 @@ class Signin(FormView):
             
         return response
 
-class CustomLogoutView(LoginRequiredMixin,LogoutView):
-    template_name = 'authentication/signin.html'
-    def get_next_page(self):
-        return render(self.request,self.template_name)
+class CustomLogoutView(LoginRequiredMixin,View):
+    template_name = '/authentication/signin.html'
+    def get(self,request):
+        logout(request)
+        return redirect(self.template_name)
+
 
 class Home(LoginRequiredMixin, View):
     login_url = 'signin/'

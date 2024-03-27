@@ -3,7 +3,7 @@ from django.views.generic import *
 from django.contrib.auth.views import LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate,login
+from django.contrib.auth import authenticate,login,logout
 from django.urls import reverse_lazy
 from django.contrib import messages
 import pandas as pd
@@ -43,10 +43,11 @@ class DashboardLogin(FormView):
             return redirect(self.success_url)
         return super().get(request, *args, **kwargs)
 
-class CustomLogoutView(CustomLoginRequiredAdmin,LogoutView):
+class CustomLogoutView(CustomLoginRequiredAdmin,View):
     template_name = 'dashboard/signin.html'
-    def get_next_page(self):
-        return render(self.request,self.template_name)
+    def get(self,request):
+        logout(request)
+        return redirect('DashboardLogin')
     
 class DashboardHome(CustomLoginRequiredAdmin,ListView):
     template_name = 'dashboard/userslist.html'
